@@ -54,7 +54,6 @@ describe("Board", function() {
       [0, 0, 0, 0]
     ]);
   });
-
   describe("Board with hard major diagonal conflict", function() {
     verifyConflictTypes(['majorDiagonal', 'queens'], [
       [0, 0, 0, 0],
