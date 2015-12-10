@@ -137,47 +137,54 @@ window.findNRooksSolution = function(n, startRow, startColumn, memo) {
 };
 window.countNRooksSolutions = function(n){
   //declare an array that will keep track of the taken position
+  
   var taken = [];
-  //declare an array to keep track of the number of solutions
+  //initalize all columns to be available
+
   var solutionSet = [];
+  
   //Create and emptyMatrix, that will used as the root
   var seed = makeEmptyMatrix(n);
+  
   //declare a recFun
-  console.log('starting ', n)
   var recFun = function(rowLevel, board){
-    // console.log('@ this row:', rowLevel)
-    //BASE CASE
-    
-    console.log('@level',rowLevel+1)
-    
+
     if (rowLevel > n-1){
-      solutionSet.push(board);
+
+      solutionSet.push(copyBoard(board));
       return;
     }
     //iterate through the column
     for (var column = 0; column < n; column++) {
-          console.log('@column:', column)
-          console.log('taken list',taken)
       if(!taken[column]){
-        //place a piece on the board
+        //place a piece on the board and mark the column as unavailable
         board[rowLevel][column]=1;
-        //mark the column as unavailable
         taken[column]=true;
-        // console.log('taken column', taken)
+
         //recurse down
-        recFun(rowLevel+1, seed.slice());
-        //make the column available again
+        recFun(rowLevel+1, board.slice());
+        
+        //take the piece off the board and make the column available again
+        board[rowLevel][column]=0
         taken[column]=false;
-      } else {
-        board[rowLevel][column]=0;
-      }
+                  // console.log('taken list after set to false',taken)
+
+      } 
     };
   }
+
   //Initialize the recFun
-  debugger;
   recFun(0, seed);
+  
+  //print solutions
+  if(n<=4){
+    for (var i = 0; i < solutionSet.length; i++) {
+      printBoard(solutionSet[i]);
+      console.log("==========================")
+    };
+  } 
+
   //return the number of solutions
-  console.log('final solution set', solutionSet)
   return solutionSet.length;
 }
 
@@ -191,7 +198,22 @@ var makeEmptyMatrix = function(n) {
     });
   };
 
+var printBoard = function(board){
+  // for (var i = board.length - 1; i >= 0; i--) {
+    for (var i = 0; i < board.length; i++) {
+      console.log(board[i].toString())
+    };
+    // console.log(board[i].toString());
+  // };
+}
 
+var copyBoard = function(board){
+  var newBoard = [];
+  for (var i = 0; i < board.length; i++) {
+    newBoard.push(board[i].slice());
+  };
+  return newBoard;
+}
 
 
 
