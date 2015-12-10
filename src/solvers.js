@@ -121,6 +121,7 @@ window.findNRooksSolution = function(n) {
   return result;
 };
 window.countNRooksSolutions = function(n){
+  console.log('------------------ROOKS STARTING n = ' ,n, '-------------------')
   //declare an array that will keep track of the taken position
   var taken = [];
   //initalize all columns to be available
@@ -150,12 +151,13 @@ window.countNRooksSolutions = function(n){
   //Initialize the recFun
   recFun(0);
   // print solutions
-  // if(n<=4){
-  //   for (var i = 0; i < solutionSet.length; i++) {
-  //     printBoard(solutionSet[i]);
-  //     console.log("==========================")
-  //   };
-  // } 
+  if(n<=4){
+    for (var i = 0; i < solutionSet.length; i++) {
+      printBoard(solutionSet[i]);
+      console.log("==========================")
+    };
+  } 
+  console.log('number of solutions',solutionSet.length)
   return solutionSet.length;
 }
 
@@ -199,7 +201,7 @@ window.countNQueensSolutions = function(n) {
   return findNQueensSolutions(n).length;
 };
 window.findNQueensSolutions = function(n){
-  console.log('------------------STARTING n = ' ,n, '-------------------')
+  console.log('------------------QUEENS STARTING n = ' ,n, '-------------------')
   var nonDuplicateSets=[];
   var columnFlag = [];
   var majorFlag = [];
