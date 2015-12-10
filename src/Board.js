@@ -114,7 +114,8 @@
     hasColConflictAt: function(colIndex) {
          var numberOfPieces = 0;
       for (var i = 0; i < this.attributes.n; i++) {
-        if(this.get(i)[colIndex]){
+        // debugger
+        if(this.attributes[i][colIndex]){
           numberOfPieces++;
         }
       };
@@ -150,7 +151,7 @@
              // this.get(i + majorDiagonalColumnIndexAtFirstRow)[i]){
     // debugger 
       if(i + majorDiagonalColumnIndexAtFirstRow >= 0){
-          if(this.get(i)[i+majorDiagonalColumnIndexAtFirstRow]){
+          if(this.attributes[i][i+majorDiagonalColumnIndexAtFirstRow]){
           numberOfPieces++;
           // console.log('numberOfPieces',numberOfPieces)
           }

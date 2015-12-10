@@ -100,22 +100,7 @@
 
 
 // // return a matrix (an array of arrays) representing a single nxn chessboard, with n queens placed such that none of them can attack each other
-// window.findNQueensSolution = function(n) {
-//   var solution = undefined; //fixme
-
-//   console.log('Single solution for ' + n + ' queens:', JSON.stringify(solution));
-//   return solution;
-// };
-
-
-// // return the number of nxn chessboards that exist, with n queens placed such that none of them can attack each other
-// window.countNQueensSolutions = function(n) {
-//   var solution = undefined; //fixme
-
-//   console.log('Number of solutions for ' + n + ' queens:', solutionCount);
-//   return solutionCount;
-// };
-window.findNRooksSolution = function(n, startRow, startColumn, memo) {
+window.findNRooksSolution = function(n) {
   var numberOfPieces = 0;
   var newboard = new Board({n:n});
   for (var i = 0; i < newboard.attributes.n; i++) {
@@ -137,20 +122,14 @@ window.findNRooksSolution = function(n, startRow, startColumn, memo) {
 };
 window.countNRooksSolutions = function(n){
   //declare an array that will keep track of the taken position
-  
   var taken = [];
   //initalize all columns to be available
-
   var solutionSet = [];
-  
   //Create and emptyMatrix, that will used as the root
-  var seed = makeEmptyMatrix(n);
-  
+  var board = makeEmptyMatrix(n);
   //declare a recFun
-  var recFun = function(rowLevel, board){
-
+  var recFun = function(rowLevel){
     if (rowLevel > n-1){
-
       solutionSet.push(copyBoard(board));
       return;
     }
@@ -160,31 +139,23 @@ window.countNRooksSolutions = function(n){
         //place a piece on the board and mark the column as unavailable
         board[rowLevel][column]=1;
         taken[column]=true;
-
         //recurse down
-        recFun(rowLevel+1, board.slice());
-        
+        recFun(rowLevel+1);        
         //take the piece off the board and make the column available again
         board[rowLevel][column]=0
         taken[column]=false;
-                  // console.log('taken list after set to false',taken)
-
       } 
     };
   }
-
   //Initialize the recFun
-  recFun(0, seed);
-  
-  //print solutions
-  if(n<=4){
-    for (var i = 0; i < solutionSet.length; i++) {
-      printBoard(solutionSet[i]);
-      console.log("==========================")
-    };
-  } 
-
-  //return the number of solutions
+  recFun(0);
+  // print solutions
+  // if(n<=4){
+  //   for (var i = 0; i < solutionSet.length; i++) {
+  //     printBoard(solutionSet[i]);
+  //     console.log("==========================")
+  //   };
+  // } 
   return solutionSet.length;
 }
 
@@ -218,3 +189,82 @@ var copyBoard = function(board){
 
 
 
+window.findNQueensSolution = function(n) {
+  return findNQueensSolutions(n)[0] || makeEmptyMatrix(n);
+};
+
+
+// return the number of nxn chessboards that exist, with n queens placed such that none of them can attack each other
+window.countNQueensSolutions = function(n) {
+  return findNQueensSolutions(n).length;
+};
+window.findNQueensSolutions = function(n){
+  console.log('------------------STARTING n = ' ,n, '-------------------')
+  var nonDuplicateSets=[];
+  var columnFlag = [];
+  var majorFlag = [];
+  var minorFlag = [];
+  var board = makeEmptyMatrix(n);
+  // console.log('printBoard',n,board)
+
+  var recurseOverRow = function(row){
+    if(row > n-1){
+      nonDuplicateSets.push(copyBoard(board));
+  // console.log('solutionset',nonDuplicateSets)
+      return;
+    }
+    for (var column = 0; column < n; column++) {
+      // console.log('checking',row,column)
+      // debugger
+      if(!columnFlag[column] && !majorFlag[column-row] && !minorFlag[column+row]){
+        // console.log('place a piece')
+        board[row][column] = 1;
+        columnFlag[column] = true;
+        majorFlag[column-row] = true;
+        minorFlag[column+row] = true;
+
+        recurseOverRow(row+1);
+        // console.log('cleanup')
+        board[row][column] = 0;
+        columnFlag[column] = false;
+        majorFlag[column-row] = false;
+        minorFlag[column+row] = false;
+      } 
+
+    }
+  };
+  recurseOverRow(0);
+    if(n<=5){
+    for (var i = 0; i < nonDuplicateSets.length; i++) {
+      console.log("==========================")
+      printBoard(nonDuplicateSets[i]);
+    };
+  } 
+  //output a set of games  like the "solutionSet" array
+  return nonDuplicateSets;
+};
+
+window.findNQueensTheKnightsWay = function(n){
+  var nonDuplicateSets =[];
+  var numberOfPieces = 0;
+  var columnFlag = [];
+  var majorFlag = [];
+  var minorFlag = [];
+  var board = makeEmptyMatrix(n);
+
+  var recursingKnight = function(row){
+    if(numberOfPieces === n){
+      nonDuplicateSets.push(copyBoard(board));
+    }
+    for (var column = 0; column < n; column++) {
+     
+    };
+  }
+  recursingKnight(0)
+  return nonDuplicateSets;
+}
+
+// Find a working function that properly transposes a board
+window.rotateBoard = function(board){
+
+}
