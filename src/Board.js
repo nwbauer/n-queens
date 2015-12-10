@@ -156,7 +156,7 @@
           }
         }
       };
-      debugger
+      // debugger
       if(numberOfPieces>1){
         return true; // fixme
       } else {
